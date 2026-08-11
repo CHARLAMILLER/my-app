@@ -20,6 +20,10 @@ function App() {
     try {
       const raw = localStorage.getItem('employees');
       if (raw) setEmployees(JSON.parse(raw));
+      else if (process.env.NODE_ENV === 'development') {
+        // Seed a test employee for development when no data exists
+        setEmployees([{ EmployeeId: 12345, name: 'Test Employee', email: 'test@example.com', title: 'Developer', department: 'Engineering' }]);
+      }
     } catch (e) {
       console.error('Failed to parse employees from localStorage', e);
     }
