@@ -18,10 +18,16 @@ function App() {
   // Load employees from localStorage on mount
   useEffect(() => {
     try {
+      // localStorage.getItem returns a string (or null). We stored JSON there,
+      // so retrieve the string and parse it back to an array/object with
+      // JSON.parse before putting it into React state.
       const raw = localStorage.getItem('employees');
-      if (raw) setEmployees(JSON.parse(raw));
-      else if (process.env.NODE_ENV === 'development') {
+      if (raw) {
+        // Parse the stored JSON string into the original JavaScript array
+        setEmployees(JSON.parse(raw));
+      } else if (process.env.NODE_ENV === 'development') {
         // Seed a test employee for development when no data exists
+        // (This will also be persisted by the saving effect below.)
         setEmployees([{ EmployeeId: 12345, name: 'Test Employee', email: 'test@example.com', title: 'Developer', department: 'Engineering' }]);
       }
     } catch (e) {
@@ -32,6 +38,8 @@ function App() {
   // Persist employees to localStorage whenever they change
   useEffect(() => {
     try {
+      // localStorage only stores strings. Convert the employees array to a
+      // JSON string with JSON.stringify before saving it with setItem.
       localStorage.setItem('employees', JSON.stringify(employees));
     } catch (e) {
       console.error('Failed to save employees to localStorage', e);
@@ -39,8 +47,13 @@ function App() {
   }, [employees]);
 
   const addEmployee = (emp) => {
+    // Ensure the new employee has a unique ID. If one was supplied use it,
+    // otherwise generate a simple random ID.
     const id = emp.EmployeeId || Math.floor(Math.random() * 1000000);
     const newEmp = { ...emp, EmployeeId: id };
+
+    // Update React state. The saving effect above will serialize and persist
+    // the updated `employees` array to localStorage automatically.
     setEmployees((prev) => [newEmp, ...prev]);
   };
 
