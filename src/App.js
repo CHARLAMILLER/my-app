@@ -61,18 +61,22 @@ function App() {
     setEmployees((prev) => prev.filter((e) => String(e.EmployeeId) !== String(id)));
   };
 
+  const EmployeePage = () => (
+    <div className="employee-page">
+      <EmployeeForm onSubmit={addEmployee} />
+      <EmployeeList employees={employees} onDelete={removeEmployee} />
+    </div>
+  );
+
   return (
     <Router>
       <div>
-        <nav>
-          <Link to="/">Home</Link> | <Link to="/about">About</Link> | <Link to="/employee">New Employee</Link> | <Link to="/employees">Employee List</Link>
-        </nav>
-
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<EmployeePage />} />
           <Route path="/about" element={<About />} />
-          <Route path="/employee" element={<EmployeeForm onSubmit={addEmployee} />} />
-          <Route path="/employees" element={<EmployeeList employees={employees} onDelete={removeEmployee} />} />
+          <Route path="/employee" element={<EmployeePage />} />
+          <Route path="/employees" element={<EmployeePage />} />
+          <Route path="/employees/:id" element={<EmployeeDetail employees={employees} />} />
           <Route path="/employee/:id" element={<EmployeeDetail employees={employees} />} />
         </Routes>
       </div>

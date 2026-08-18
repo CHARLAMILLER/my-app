@@ -1,10 +1,10 @@
 import React from 'react';
-import '../EmployeeForm.css';
+import '../Content/employee.css';
 
 class EmployeeForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { name: '', email: '', title: '', department: '' };
+        this.state = { name: '', email: '', phone: '' };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -16,20 +16,19 @@ class EmployeeForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log('Submitted employee:', this.state);
         if (this.props.onSubmit) this.props.onSubmit(this.state);
-        this.setState({ name: '', email: '', title: '', department: '' });
+        this.setState({ name: '', email: '', phone: '' });
     }
 
     render() {
-        const { name, email, title, department } = this.state;
+        const { name, email, phone } = this.state;
         return (
             <div className="employee-form-container">
                 <form className="employee-form" onSubmit={this.handleSubmit}>
-                    <h2>New Employee</h2>
+                    <h2 className="form-title">Add Employee</h2>
 
                     <label className="form-label">
-                        Name
+                        Name:
                         <input
                             type="text"
                             name="name"
@@ -40,7 +39,7 @@ class EmployeeForm extends React.Component {
                     </label>
 
                     <label className="form-label">
-                        Email
+                        Email:
                         <input
                             type="email"
                             name="email"
@@ -51,26 +50,16 @@ class EmployeeForm extends React.Component {
                     </label>
 
                     <label className="form-label">
-                        Job Title
+                        Phone:
                         <input
-                            type="text"
-                            name="title"
-                            value={title}
+                            type="tel"
+                            name="phone"
+                            value={phone}
                             onChange={this.handleChange}
                         />
                     </label>
 
-                    <label className="form-label">
-                        Department
-                        <input
-                            type="text"
-                            name="department"
-                            value={department}
-                            onChange={this.handleChange}
-                        />
-                    </label>
-
-                    <button type="submit" className="submit-button">Add Employee</button>
+                    <button type="submit" className="submit-button">Add</button>
                 </form>
             </div>
         );
